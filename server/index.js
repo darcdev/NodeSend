@@ -1,11 +1,13 @@
 const express = require("express");
+const app = express();
+
+// DB
 const connectDB = require("./config/db");
 
 //routes
 const users = require("./routes/users");
 const auth = require("./routes/auth");
-
-const app = express();
+const links = require("./routes/links");
 
 // connect to database
 connectDB();
@@ -18,9 +20,9 @@ app.use(express.json());
 //Routes App
 app.use("/api/usuarios", users);
 app.use("/api/auth", auth);
+app.use("/api/enlaces", links);
 
 // start Appp
-
 app.listen(port, "0.0.0.0", () => {
   console.log(`Server is listening in the port ${port}`);
 });
