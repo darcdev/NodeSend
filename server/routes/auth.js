@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+
 const { authUser, userisAuth } = require("../controller/authController");
 const { check } = require("express-validator");
 const auth = require("../middleware/auth");
+
 router.post(
   "/",
   [

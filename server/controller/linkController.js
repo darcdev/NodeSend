@@ -1,7 +1,8 @@
-const Links = require("../models/links");
 const shortid = require("shortid");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
+const Links = require("../models/links");
+
 exports.newLink = async (req, res, next) => {
   // check errors
   const errors = validationResult(req);
@@ -34,5 +35,35 @@ exports.newLink = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
+  }
+};
+
+// Obtener el enlace
+
+exports.getLink = async (req, res, next) => {
+  // verify if link exists
+  const { url } = req.params;
+  const link = await Links.findOne({ url });
+  console.log(link);
+  if (!link) {
+    res.status(404).json({ msg: "El enlace no existe" });
+    return next();
+  }
+  res.json({
+    archivo: link.name,
+  });
+
+  const { downloads, name } = link;
+
+  if (downloads === 1) {
+    // delete file
+    req.file = name;
+    // delete to db entry
+    await Links.findOneAndRemove({ url });
+    next();
+  } else {
+    link.downloads--;
+    await link.save();
+    console.log("Aun hay descargas");
   }
 };

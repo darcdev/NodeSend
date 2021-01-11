@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 const links = require("./routes/links");
+const files = require("./routes/files");
 
 // connect to database
 connectDB();
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api/usuarios", users);
 app.use("/api/auth", auth);
 app.use("/api/enlaces", links);
+app.use("/api/archivos", files);
 
 // start Appp
 app.listen(port, "0.0.0.0", () => {
