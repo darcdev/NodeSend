@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import Layout from "../components/Layout";
-import { useFormik, yupToFormErrors } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
+import authContext from "../context/auth/authContext";
+import Alert from "../components/Alert";
 
 const CrearCuenta = () => {
+  const AuthContext = useContext(authContext);
+  const { message, registerUser } = AuthContext;
+
   const formik = useFormik({
     initialValues: {
-      nombre: "",
+      name: "",
       email: "",
       password: "",
     },
     validationSchema: Yup.object({
-      nombre: Yup.string().required("El nombre es Obligatorio"),
+      name: Yup.string().required("El nombre es Obligatorio"),
       email: Yup.string()
         .email("El email no es valido")
         .required("El email es obligatorio"),
@@ -19,8 +24,8 @@ const CrearCuenta = () => {
         .required("El password no puede ir vacio")
         .min(6, "El password debe ser al menos de 6 caracteres"),
     }),
-    onSubmit: (valores) => {
-      console.log(valores);
+    onSubmit: (values) => {
+      registerUser(values);
     },
   });
   return (
@@ -29,6 +34,7 @@ const CrearCuenta = () => {
         <h2 className="text-4xl font-sans font-bold text-gray-800 text-center my-4">
           Crear Cuenta
         </h2>
+        {message && <Alert />}
         <div className="flex justify-center mt-5">
           <div className="w-full max-w-lg">
             <form
@@ -37,24 +43,24 @@ const CrearCuenta = () => {
             >
               <div className="mb-4">
                 <label
-                  htmlFor="nombre"
+                  htmlFor="name"
                   className="block text-black text-sm font-bold mb-2"
                 >
                   Nombre
                 </label>
                 <input
-                  id="nombre"
+                  id="name"
                   type="text"
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   placeholder="Nombre de Usuario"
-                  values={formik.values.nombre}
+                  values={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.nombre && formik.errors.nombre ? (
+                {formik.touched.nombre && formik.errors.name ? (
                   <div className="my-2 bg-gray-200 border-l-4 border-red-500 text-red-700 p-4">
                     <p className="font-bold"> Error</p>
-                    <p>{formik.errors.nombre}</p>
+                    <p>{formik.errors.name}</p>
                   </div>
                 ) : null}
               </div>

@@ -118,3 +118,4 @@ dist
 # Multer
 
 uploads/
+next.config.js
