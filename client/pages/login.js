@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Layout from "../components/Layout";
-import { useFormik, yupToFormErrors } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
+import authContext from "../context/auth/authContext";
+import Alert from "../components/Alert";
+import { useRouter } from "next/router";
 
 const Login = () => {
+  const AuthContext = useContext(authContext);
+  const { message, authenticate, login } = AuthContext;
+  const router = useRouter();
+  useEffect(() => {
+    if (authenticate) {
+      router.push("/");
+    }
+  }, [authenticate]);
+
   const formik = useFormik({
     initialValues: {
-      nombre: "",
       email: "",
       password: "",
     },
@@ -16,8 +27,8 @@ const Login = () => {
         .required("El email es obligatorio"),
       password: Yup.string().required("El password no puede ir vacio"),
     }),
-    onSubmit: (valores) => {
-      console.log(valores);
+    onSubmit: (values) => {
+      login(values);
     },
   });
   return (
@@ -26,6 +37,7 @@ const Login = () => {
         <h2 className="text-4xl font-sans font-bold text-gray-800 text-center my-4">
           Iniciar Sesión
         </h2>
+        {message && <Alert />}
         <div className="flex justify-center mt-5">
           <div className="w-full max-w-lg">
             <form
