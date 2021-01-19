@@ -28,7 +28,7 @@ exports.authUser = async (req, res, next) => {
       {
         id: user._id,
         email: user.email,
-        nombre: user.name,
+        name: user.name,
       },
       process.env.SECRET_KEY,
       {

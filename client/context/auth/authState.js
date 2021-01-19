@@ -29,7 +29,6 @@ const AuthState = ({ children }) => {
   // functions
 
   // login
-
   const login = async (data) => {
     try {
       const result = await clientAxios.post("/api/auth", data);
@@ -56,12 +55,12 @@ const AuthState = ({ children }) => {
     tokenAuth(token);
     try {
       const result = await clientAxios.get("/api/auth");
-      console.log(result);
       dispatch({
         type: USER_AUTHENTICATED,
         payload: result.data.user,
       });
     } catch (error) {
+      console.log(error);
       dispatch({
         type: LOGIN_ERROR,
         payload: error.response.data.msg,

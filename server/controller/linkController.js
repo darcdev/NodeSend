@@ -11,11 +11,11 @@ exports.newLink = async (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
   // save on db
-  const { original_name } = req.body;
+  const { original_name, name } = req.body;
 
   const link = new Links();
   link.url = shortid.generate();
-  link.name = shortid.generate();
+  link.name = name;
   link.original_name = original_name;
 
   if (req.user) {
@@ -37,6 +37,16 @@ exports.newLink = async (req, res, next) => {
     console.log(error);
   }
 };
+// all links
+
+exports.getAllLinks = async (req, res, next) => {
+  try {
+    const links = await Links.find({}).select("url -_id");
+    res.json({ enlaces: links });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // Obtener el enlace
 
@@ -44,7 +54,6 @@ exports.getLink = async (req, res, next) => {
   // verify if link exists
   const { url } = req.params;
   const link = await Links.findOne({ url });
-  console.log(link);
   if (!link) {
     res.status(404).json({ msg: "El enlace no existe" });
     return next();
@@ -53,17 +62,5 @@ exports.getLink = async (req, res, next) => {
     archivo: link.name,
   });
 
-  const { downloads, name } = link;
-
-  if (downloads === 1) {
-    // delete file
-    req.file = name;
-    // delete to db entry
-    await Links.findOneAndRemove({ url });
-    next();
-  } else {
-    link.downloads--;
-    await link.save();
-    console.log("Aun hay descargas");
-  }
+  next();
 };

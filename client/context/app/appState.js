@@ -9,6 +9,7 @@ import {
   CREATE_LINK_ERROR,
   CREATE_LINK_SUCCESS,
   UPLOAD_FILE,
+  CLEAN_STATE,
 } from "../../types";
 import clientAxios from "../../config/axios";
 
@@ -83,7 +84,17 @@ const AppState = ({ children }) => {
       });
     } catch (error) {
       console.log(error);
+      dispatch({
+        type: CREATE_LINK_ERROR,
+        payload: error.response.data.msg,
+      });
     }
+  };
+
+  const cleanState = () => {
+    dispatch({
+      type: CLEAN_STATE,
+    });
   };
 
   let value = {
@@ -98,6 +109,7 @@ const AppState = ({ children }) => {
     showAlert,
     uploadFile,
     createLink,
+    cleanState,
   };
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
 };

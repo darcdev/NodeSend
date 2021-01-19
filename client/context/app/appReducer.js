@@ -1,5 +1,6 @@
 import {
   CLEAN_ALERT,
+  CLEAN_STATE,
   CREATE_LINK_SUCCESS,
   SHOW_ALERT,
   UPLOAD_FILE,
@@ -37,6 +38,18 @@ export default (state, action) => {
       return {
         ...state,
         url: action.payload,
+      };
+    case CLEAN_STATE:
+      return {
+        ...state,
+        message_file: "",
+        name: "",
+        original_name: "",
+        loading: null,
+        downloads: 1,
+        password: "",
+        author: null,
+        url: "",
       };
     default:
       return state;
