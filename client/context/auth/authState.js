@@ -55,10 +55,12 @@ const AuthState = ({ children }) => {
     tokenAuth(token);
     try {
       const result = await clientAxios.get("/api/auth");
-      dispatch({
-        type: USER_AUTHENTICATED,
-        payload: result.data.user,
-      });
+      if (result.data.user) {
+        dispatch({
+          type: USER_AUTHENTICATED,
+          payload: result.data.user,
+        });
+      }
     } catch (error) {
       console.log(error);
       dispatch({

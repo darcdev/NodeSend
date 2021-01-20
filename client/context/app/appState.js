@@ -10,6 +10,8 @@ import {
   CREATE_LINK_SUCCESS,
   UPLOAD_FILE,
   CLEAN_STATE,
+  ADD_PASSWORD,
+  ADD_DOWNLOADS,
 } from "../../types";
 import clientAxios from "../../config/axios";
 
@@ -97,6 +99,21 @@ const AppState = ({ children }) => {
     });
   };
 
+  // Add Password
+  const addPassword = (password) => {
+    dispatch({
+      type: ADD_PASSWORD,
+      payload: password,
+    });
+  };
+
+  const addDownloads = (downloads) => {
+    console.log(downloads);
+    dispatch({
+      type: ADD_DOWNLOADS,
+      payload: downloads,
+    });
+  };
   let value = {
     message_file: state.message_file,
     name: state.name,
@@ -110,6 +127,8 @@ const AppState = ({ children }) => {
     uploadFile,
     createLink,
     cleanState,
+    addPassword,
+    addDownloads,
   };
   return <appContext.Provider value={value}>{children}</appContext.Provider>;
 };

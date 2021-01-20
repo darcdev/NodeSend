@@ -1,4 +1,6 @@
 import {
+  ADD_DOWNLOADS,
+  ADD_PASSWORD,
   CLEAN_ALERT,
   CLEAN_STATE,
   CREATE_LINK_SUCCESS,
@@ -39,6 +41,17 @@ export default (state, action) => {
         ...state,
         url: action.payload,
       };
+    case ADD_PASSWORD:
+      return {
+        ...state,
+        password: action.payload,
+      };
+    case ADD_DOWNLOADS: {
+      return {
+        ...state,
+        downloads: action.payload,
+      };
+    }
     case CLEAN_STATE:
       return {
         ...state,

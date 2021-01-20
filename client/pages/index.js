@@ -13,7 +13,10 @@ const Index = () => {
   const { url, message_file } = AppContext;
 
   useEffect(() => {
-    authenticateUser();
+    const token = localStorage.getItem("rsn-token");
+    if (token) {
+      authenticateUser();
+    }
   }, []);
   return (
     <Layout>

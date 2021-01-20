@@ -29,6 +29,7 @@ export default (state, action) => {
       return {
         ...state,
         user: action.payload,
+        authenticate: true,
       };
     case SIGNOUT:
       localStorage.removeItem("rsn-token");
