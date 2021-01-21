@@ -60,7 +60,42 @@ exports.getLink = async (req, res, next) => {
   }
   res.json({
     archivo: link.name,
+    password: false,
   });
 
   next();
+};
+
+exports.havePassword = async (req, res, next) => {
+  // verify if link exists
+  const { url } = req.params;
+  const link = await Links.findOne({ url });
+  if (!link) {
+    res.status(404).json({ msg: "El enlace no existe" });
+    return next();
+  }
+
+  if (link.password) {
+    return res.json({
+      password: true,
+      link: link.url,
+    });
+  }
+  next();
+};
+
+exports.verifyPassword = async (req, res, next) => {
+  const { url } = req.params;
+  const { password } = req.body;
+
+  // search by link
+  const link = await Links.findOne({ url });
+
+  if (bcrypt.compareSync(password, link.password)) {
+    // let download file
+    next();
+  } else {
+    return res.status(401).json({ msg: "Password incorrecto" });
+  }
+  console.log(req.body);
 };

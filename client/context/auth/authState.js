@@ -55,6 +55,7 @@ const AuthState = ({ children }) => {
     tokenAuth(token);
     try {
       const result = await clientAxios.get("/api/auth");
+      console.log(result);
       if (result.data.user) {
         dispatch({
           type: USER_AUTHENTICATED,

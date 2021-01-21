@@ -4,6 +4,8 @@ const {
   newLink,
   getLink,
   getAllLinks,
+  havePassword,
+  verifyPassword,
 } = require("../controller/linkController");
 
 const { check } = require("express-validator");
@@ -19,5 +21,6 @@ router.post(
   newLink
 );
 router.get("/", getAllLinks);
-router.get("/:url", getLink);
+router.get("/:url", havePassword, getLink);
+router.post("/:url", verifyPassword, getLink);
 module.exports = router;
